@@ -1,10 +1,10 @@
 import { DynamoDB } from 'aws-sdk';
 import * as uuid from 'uuid';
+import { ValidationError } from 'is-my-json-valid';
 
 import { tableName } from './env';
 import { Callback, APIGatewayProxyResult } from 'aws-lambda';
-
-export type TValidator<TType> = (obj: TType) => string[];
+import { TValidator } from './validator';
 
 export class DB<TType> {
   constructor(private db: DynamoDB.DocumentClient, private validate: TValidator<TType>, private userEmail: string) { }
@@ -57,8 +57,9 @@ export class DB<TType> {
 
     const validationErrors = this.validate(item);
     if (validationErrors && validationErrors.length > 0) {
-      console.error('Validation Failed', validationErrors.join(','));
-      callback(null, this.createResponse(403, validationErrors));
+      const errors = this.formatErrors(validationErrors);
+      console.error('Validation Failed', validationErrors);
+      callback(null, this.createResponse(403, errors));
       return;
     }
 
@@ -87,8 +88,9 @@ export class DB<TType> {
     };
     const validationErrors = this.validate(item);
     if (validationErrors && validationErrors.length > 0) {
-      console.error('Validation Failed', validationErrors.join(','));
-      callback(null, this.createResponse(403, validationErrors));
+      const errors = this.formatErrors(validationErrors);
+      console.error('Validation Failed', validationErrors);
+      callback(null, this.createResponse(403, errors));
       return;
     }
 
@@ -127,11 +129,16 @@ export class DB<TType> {
     });
   }
 
+  private formatErrors(errors: ValidationError[]): string[] {
+    return errors.map(e => `${e.field}: ${e.message}`);
+  }
+
   private createResponse(statusCode: number, body: any): APIGatewayProxyResult {
     return {
       statusCode: statusCode,
       headers: {
-        "Access-Control-Allow-Origin": "*"
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
       },
       body: JSON.stringify(body)
     }

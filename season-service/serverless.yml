@@ -31,17 +31,17 @@ package:
 
 functions:
   auth:
-    handler: auth.auth
+    handler: src/auth.auth
     cors: true
   publicEndpoint:
-    handler: handler.publicEndpoint
+    handler: src/handler.publicEndpoint
     events:
       - http:
           path: api/public
           method: post
           cors: true
   privateEndpoint:
-    handler: handler.privateEndpoint
+    handler: src/handler.privateEndpoint
     events:
       - http:
           path: api/private
@@ -50,7 +50,7 @@ functions:
           authorizer: auth
           cors: true
   list:
-    handler: handler.list
+    handler: src/handler.list
     events:
       - http:
           path: /
@@ -58,7 +58,7 @@ functions:
           authorizer: auth
           cors: true
   create:
-    handler: handler.create
+    handler: src/handler.create
     events:
       - http:
           path: /          
@@ -66,7 +66,7 @@ functions:
           authorizer: auth
           cors: true
   get:
-    handler: handler.get
+    handler: src/handler.get
     events:
       - http:
           path: /{id}          
@@ -74,7 +74,7 @@ functions:
           authorizer: auth
           cors: true
   update:
-    handler: handler.update
+    handler: src/handler.update
     events:
       - http:
           path: /{id}          
@@ -82,7 +82,7 @@ functions:
           authorizer: auth
           cors: true
   delete:
-    handler: handler.remove
+    handler: src/handler.remove
     events:
       - http:
           path: /{id}          

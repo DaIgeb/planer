@@ -12,7 +12,9 @@
       "dom",
       "es2015",
       "esnext.asynciterable"
-    ],
-    "rootDir": "./"
-  }
+    ]
+  },
+  "files": [
+    "../types.ts"
+  ]
 }
