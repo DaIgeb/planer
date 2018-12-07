@@ -10,7 +10,6 @@ provider:
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
     STAGE: ${opt:stage, self:provider.stage}
-    AUTH0_CLIENT_ID: ${file(../secrets.json):AUTH0_CLIENT_ID}
     AUTH0_AUDIENCE: ${file(../secrets.json):AUTH0_AUDIENCE}
     AUTH0_ISSUER: ${file(../secrets.json):AUTH0_ISSUER}
     AUTH0_CLIENT_PUBLIC_KEY: ${file(../public_key)}

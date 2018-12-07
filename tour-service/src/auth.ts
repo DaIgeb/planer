@@ -11,7 +11,6 @@ import {
 
 import {
   AUTH0_AUDIENCE,
-  AUTH0_CLIENT_ID,
   AUTH0_ISSUER,
   AUTH0_CLIENT_PUBLIC_KEY
 } from './env';
@@ -55,39 +54,27 @@ export const auth: CustomAuthorizerHandler = (event: CustomAuthorizerEvent, cont
     // no auth token!
     return callback('Unauthorized');
   }
-
-  decodeToken(tokenValue, (decoded) => {
-    if (!decoded) {
-      return callback('Unauthorized');
-    }
-    // is custom authorizer function
-    const policy = generatePolicy(decoded.sub, 'Allow', event.methodArn);
-    policy.context = {
-      token: tokenValue
-    };
-    console.log('Returning policy', policy);
-    return callback(null, policy);
-  });
-};
-
-export const decodeToken = (token: string, callback: (decoded: { sub: string } | null) => void) => {
   const options = {
-    audience: AUTH0_CLIENT_ID,
+    audience: AUTH0_AUDIENCE,
     issuer: AUTH0_ISSUER
   };
 
   try {
-    jwt.verify(token, AUTH0_CLIENT_PUBLIC_KEY, options, (verifyError, decoded) => {
-      if (verifyError || typeof (decoded) === 'string') {
-        console.log('verifyError', verifyError || decoded);
-
-        return callback(null);
+    jwt.verify(tokenValue, AUTH0_CLIENT_PUBLIC_KEY, options, (verifyError, decoded) => {
+      if (verifyError) {
+        console.log('verifyError', verifyError);
+        // 401 Unauthorized
+        console.log(`Token invalid. ${verifyError}`);
+        return callback('Unauthorized');
       }
-
-      console.log('Valid token', decoded);
-      return callback(decoded as any);
+      // is custom authorizer function
+      console.log('valid from customAuthorizer', decoded);
+      const policy = generatePolicy((decoded as any).sub, 'Allow', event.methodArn);
+      policy.context = decoded as any;
+      return callback(null, policy);
     });
   } catch (err) {
-    return callback(null);
+    console.log('catch error. Invalid token', err);
+    return callback('Unauthorized');
   }
 };

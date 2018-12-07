@@ -15,6 +15,6 @@
     ]
   },
   "files": [
-    "../season-types.ts"
+    "../tour-types.ts"
   ]
 }

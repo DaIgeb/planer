@@ -4,7 +4,8 @@ import {
 } from 'aws-lambda'
 import { DB } from './DB';
 import { validator } from './validator';
-import { TSeason } from '../../types';
+import { TSeason } from '../../season-types';
+import { decodeToken } from './auth';
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -15,9 +16,18 @@ export const create: APIGatewayProxyHandler = (event, context, callback) => {
 }
 
 export const list: APIGatewayProxyHandler = (event, context, callback) => {
-  const db = new DB<TSeason>(dynamoDb, validator, "foobar");
+  if (event.requestContext.authorizer && event.requestContext.authorizer['token']) {
+    decodeToken(event.requestContext.authorizer['token'], (decoded) => {
+      const db = new DB<TSeason>(dynamoDb, validator, decoded ? decoded.sub : 'foobar');
 
-  db.list(callback);
+      db.list(callback);
+    })
+  } else {
+    console.log('List api');
+    const db = new DB<TSeason>(dynamoDb, validator, "foobar");
+
+    db.list(callback);
+  }
 }
 
 export const get: APIGatewayProxyHandler = (event, context, callback) => {

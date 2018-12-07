@@ -29,9 +29,9 @@ export class DB<TType> {
   }
 
   public list = (callback: Callback<APIGatewayProxyResult>) => {
-    console.log('List');
     const params: DynamoDB.DocumentClient.ScanInput = {
       TableName: tableName
+
     };
 
     this.db.scan(params, (error, result) => {
@@ -40,8 +40,6 @@ export class DB<TType> {
         callback(new Error('Couldn\'t fetch the tours.'));
         return;
       }
-
-      console.log('List response', result.Items);
 
       callback(null, this.createResponse(200, result.Items));
     });
