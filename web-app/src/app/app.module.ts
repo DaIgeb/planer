@@ -15,6 +15,9 @@ import { AuthService } from './auth/auth.service';
 import { CallbackComponent } from './callback/callback.component';
 import { httpInterceptorProviders } from './http-interceptors';
 import { RefreshInterceptor } from './http-interceptors/refresh-interceptor';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { SeasonComponent } from './season/season.component';
+import { AddComponent } from './season/add/add.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { RefreshInterceptor } from './http-interceptors/refresh-interceptor';
     SeasonsComponent,
     NavigationComponent,
     ToursComponent,
-    CallbackComponent
+    CallbackComponent,
+    DashboardComponent,
+    SeasonComponent,
+    AddComponent
   ],
   imports: [
     BrowserModule,

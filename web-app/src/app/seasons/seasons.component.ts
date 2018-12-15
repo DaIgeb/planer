@@ -26,7 +26,7 @@ export class SeasonsComponent implements OnInit {
     this.dataSource = new SeasonsDataSource(this.paginator, this.sort, this.api);
     this.title.setTitle('Seasons');
 
-    // this.api.getAll().subscribe(seasons => this.seasons = seasons);
+    this.api.getAll().subscribe(seasons => this.seasons = seasons);
   }
 
   showInfo(season: TSeason) {

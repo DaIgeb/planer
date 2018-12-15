@@ -1,0 +1,11 @@
+<p>
+  add works!
+  <mat-form-field>
+    <input matInput [matDatepicker]="eventDate" placeholder="Choose a date">
+    <mat-datepicker-toggle matSuffix [for]="eventDate"></mat-datepicker-toggle>
+    <mat-datepicker #eventDate></mat-datepicker>
+  </mat-form-field>
+  <button (click)="add(eventDate.value); eventDate.value=''">
+    add
+  </button>
+</p>

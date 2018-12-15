@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { WebAuth, Auth0DecodedHash } from 'auth0-js';
 import { AUTH_CONFIG, ENV } from './auth.config';
 import { HttpRequest } from '@angular/common/http';
+import { environment } from './../../environments/environment';
 import { MessageService } from '../core/message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
   private _auth0 = new WebAuth({
     clientID: AUTH_CONFIG.CLIENT_ID,
     domain: AUTH_CONFIG.CLIENT_DOMAIN,
@@ -33,8 +33,12 @@ export class AuthService {
 
   constructor(private router: Router, private message: MessageService) {
     // If app auth token is not expired, request new token
-    if (JSON.parse(localStorage.getItem('expires_at')) > Date.now()) {
-      this.renewToken();
+    if (this.useExternalAuth()) {
+      if (JSON.parse(localStorage.getItem('expires_at')) > Date.now()) {
+        this.renewToken();
+      }
+    } else {
+      this.setLoggedIn(true);
     }
   }
 
@@ -46,22 +50,26 @@ export class AuthService {
 
   login() {
     // Auth0 authorize request
-    this._auth0.authorize();
+    if (this.useExternalAuth()) {
+      this._auth0.authorize();
+    }
   }
 
   handleAuth() {
-    // When Auth0 hash parsed, get profile
-    this._auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken) {
-        window.location.hash = '';
-        this._getProfile(authResult);
-      } else if (err) {
-        this._clearRedirect();
+    if (this.useExternalAuth()) {
+      // When Auth0 hash parsed, get profile
+      this._auth0.parseHash((err, authResult) => {
+        if (authResult && authResult.accessToken) {
+          window.location.hash = '';
+          this._getProfile(authResult);
+        } else if (err) {
+          this._clearRedirect();
+          this.router.navigate(['/']);
+          console.error(`Error authenticating: ${err.error}`);
+        }
         this.router.navigate(['/']);
-        console.error(`Error authenticating: ${err.error}`);
-      }
-      this.router.navigate(['/']);
-    });
+      });
+    }
   }
 
   public collectFailedRequest(request): void {
@@ -132,26 +140,39 @@ export class AuthService {
     this._clearExpiration();
 
     this._clearRedirect();
-    // End Auth0 authentication session
-    this._auth0.logout({
-      clientID: AUTH_CONFIG.CLIENT_ID,
-      returnTo: ENV.BASE_URI
-    });
+
+    if (this.useExternalAuth()) {
+      // End Auth0 authentication session
+      this._auth0.logout({
+        clientID: AUTH_CONFIG.CLIENT_ID,
+        returnTo: ENV.BASE_URI
+      });
+    }
   }
 
   get tokenValid(): boolean {
-    // Check if current time is past access token's expiration
-    return Date.now() < JSON.parse(localStorage.getItem('expires_at'));
+    if (this.useExternalAuth()) {
+      // Check if current time is past access token's expiration
+      return Date.now() < JSON.parse(localStorage.getItem('expires_at'));
+    }
+
+    return true;
   }
 
   renewToken() {
-    // Check for valid Auth0 session
-    this._auth0.checkSession({}, (err, authResult) => {
-      if (authResult && authResult.accessToken) {
-        this._getProfile(authResult);
-      } else {
-        this._clearExpiration();
-      }
-    });
+    if (this.useExternalAuth()) {
+      // Check for valid Auth0 session
+      this._auth0.checkSession({}, (err, authResult) => {
+        if (authResult && authResult.accessToken) {
+          this._getProfile(authResult);
+        } else {
+          this._clearExpiration();
+        }
+      });
+    }
+  }
+
+  private useExternalAuth = () => {
+    return !environment.useLocal;
   }
 }

@@ -21,21 +21,27 @@
   <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100, 250]">
   </mat-paginator>
 
+  <div class="container">
+    <div class="listr">
+      <label>Season name:
+        <input #seasonName />
+      </label>
+      <!-- (click) passes input value to add() and then clears the input -->
+      <button (click)="add(seasonName.value); seasonName.value=''">
+        add
+      </button>
 
-  <label>Season name:
-      <input #seasonName />
-    </label>
-    <!-- (click) passes input value to add() and then clears the input -->
-    <button (click)="add(seasonName.value); seasonName.value=''">
-      add
-    </button>
-
-  <mat-nav-list>
-      <mat-list-item *ngFor="let season of seasons">
-          <a matLine href="...">{{ season.title }}</a>
-          <button mat-icon-button (click)="showInfo(link)">
-             <mat-icon>info</mat-icon>
+      <mat-nav-list>
+        <mat-list-item *ngFor="let season of seasons">
+          <a matLine routerLink="{{ season.id }}">{{ season.title }}</a>
+          <button mat-icon-button (click)="showInfo(season)">
+            <mat-icon>info</mat-icon>
           </button>
-       </mat-list-item>
-  </mat-nav-list>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+    <div class='detail'>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
