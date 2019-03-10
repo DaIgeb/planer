@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort } from '@angular/material';
 import { SeasonsDataSource } from './seasons-datasource';
 import { Title } from '@angular/platform-browser';
-import { SeasonService } from '../api/season.service';
-import { TSeason } from '../../../../season-types';
-import { MessageService } from '../core/message.service';
+import { SeasonService } from '../../api/season.service';
+import { TSeason } from '../../../../../season-types';
+import { MessageService } from '../../core/message.service';
 
 @Component({
-  selector: 'app-seasons',
-  templateUrl: './seasons.component.html',
-  styleUrls: ['./seasons.component.scss'],
+  selector: 'app-season-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
 })
-export class SeasonsComponent implements OnInit {
+export class ListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource: SeasonsDataSource;

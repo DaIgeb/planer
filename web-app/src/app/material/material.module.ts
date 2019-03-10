@@ -12,7 +12,11 @@ import {
   MatSortModule,
   MatCardModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatRadioModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatExpansionModule,
+  MatAutocompleteModule
 } from '@angular/material';
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
@@ -31,10 +35,16 @@ import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/m
     MatPaginatorModule,
     MatSortModule,
     MatMomentDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatRadioModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatExpansionModule,
+    MatAutocompleteModule
   ],
   exports: [
     CommonModule,
+    MatAutocompleteModule,
     MatMomentDateModule,
     MatDatepickerModule,
     MatInputModule,
@@ -46,7 +56,11 @@ import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/m
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatRadioModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatExpansionModule
   ],
   providers: [
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }

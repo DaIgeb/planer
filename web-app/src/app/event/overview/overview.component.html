@@ -1,0 +1,26 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{getDate(event) | date:'shortDate'}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{getType(event)}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  {{event | json}}
+  <ng-container [ngSwitch]="getType(event)">
+    <div *ngSwitchCase="'tour'">
+        This is a tour {{tours | json}}
+    </div>
+    <div *ngSwitchCase="'single'">
+        This is a single
+    </div>
+    <div *ngSwitchCase="'range'">
+        This is a range
+    </div>
+  </ng-container>
+  <mat-action-row *ngIf="showAdd !== true">
+    <button mat-button (click)='enableAdd()'>Add a event</button>
+  </mat-action-row>
+  <app-event-add [events$]="events$" (added)="onAdded($event)" *ngIf="showAdd === true"></app-event-add>
+</mat-expansion-panel>

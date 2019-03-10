@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SeasonsComponent } from './seasons/seasons.component';
+import { ListComponent as SeasonsComponent } from './season/list/list.component';
 import { ToursComponent } from './tours/tours.component';
 import { CallbackComponent } from './callback/callback.component';
 import { AuthGuard } from './auth/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SeasonComponent } from './season/season.component';
+import { DetailComponent as SeasonComponent } from './season/detail/detail.component';
 
 const routes: Routes = [
   {

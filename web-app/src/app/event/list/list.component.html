@@ -1,0 +1,3 @@
+<mat-accordion>
+  <app-event-overview *ngFor="let event of sortedEvents$ | async" [events$]="events$" [event]="event" (added)="onAdded($event)"></app-event-overview>
+</mat-accordion>

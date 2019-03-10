@@ -2,8 +2,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { TSeason as Season, TSeason } from '../../../../season-types';
-import { SeasonService } from '../api/season.service';
+import { TSeason as Season, TSeason } from '../../../../../season-types';
+import { SeasonService } from '../../api/season.service';
 
 /**
  * Data source for the Seasons view. This class should

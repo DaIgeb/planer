@@ -1,34 +1,41 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material/material.module';
-import { SeasonsComponent } from './seasons/seasons.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ToursComponent } from './tours/tours.component';
-import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 import { AuthService } from './auth/auth.service';
 import { CallbackComponent } from './callback/callback.component';
 import { httpInterceptorProviders } from './http-interceptors';
-import { RefreshInterceptor } from './http-interceptors/refresh-interceptor';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SeasonComponent } from './season/season.component';
-import { AddComponent } from './season/add/add.component';
+import { ListComponent as SeasonListComponent } from './season/list/list.component';
+import { DetailComponent as SeasonDetailComponent } from './season/detail/detail.component';
+import { AddComponent as SeasonAddComponent } from './season/add/add.component';
+import { AddComponent as EventAddComponent } from './event/add/add.component';
+import { ListComponent as EventListComponent } from './event/list/list.component';
+import { DetailComponent as EventDetailComponent } from './event/detail/detail.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { OverviewComponent } from './event/overview/overview.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SeasonsComponent,
+    SeasonListComponent,
     NavigationComponent,
     ToursComponent,
     CallbackComponent,
     DashboardComponent,
-    SeasonComponent,
-    AddComponent
+    SeasonDetailComponent,
+    SeasonAddComponent,
+    EventListComponent,
+    EventDetailComponent,
+    EventAddComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule,
@@ -36,10 +43,8 @@ import { AddComponent } from './season/add/add.component';
     AppRoutingModule,
     MaterialModule,
     LayoutModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthService,

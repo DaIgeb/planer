@@ -1,4 +1,4 @@
-service: season
+service: tour
 
 plugins:
   - serverless-webpack

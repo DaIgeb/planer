@@ -26,7 +26,7 @@ export type TSeason = {
   events: TEvent[];
 };
 
-type TEvent = TTourEvent | TDateRangeEvent | TSpecialSingleDayEvent;
+export type TEvent = TTourEvent | TDateRangeEvent | TSpecialSingleDayEvent;
 
 export const tourEvent = (event: TEvent): event is TTourEvent => {
   if (event) {

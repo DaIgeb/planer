@@ -1,4 +1,4 @@
-<form class="formwidth" (ngSubmit)="onSubmit(eventForm.value)" [formGroup]="eventForm">
+<form class="formwidth" (ngSubmit)="onSubmit()" [formGroup]="eventForm">
   <div>
     <label>Event type: </label>
     <mat-radio-group formControlName="eventType">
@@ -7,9 +7,9 @@
       <mat-radio-button value="single">Special Event</mat-radio-button>
     </mat-radio-group>
   </div>
-  
+
   <div>
-    <mat-form-field *ngIf="eventForm.get('eventType').value === 'tour'">
+    <mat-form-field *ngIf="eventForm.get('eventType').value !== 'range'">
       <input matInput [matDatepicker]="date" placeholder="Choose a date" formControlName="date" name="firstname">
       <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
       <mat-datepicker #date></mat-datepicker>
@@ -28,6 +28,14 @@
   <div>
     <mat-form-field *ngIf="eventForm.get('eventType').value !== 'tour'">
       <input matInput placeholder="Description" formControlName="description" name="description">
+    </mat-form-field>
+    <mat-form-field *ngIf="eventForm.get('eventType').value === 'tour'">
+      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="tour" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let tour of filteredTours | async" [value]="tour">
+          {{tour.name}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
   </div>
   <button mat-raised-button color="primary" (onClick)="onSubmit()">Submit</button>
